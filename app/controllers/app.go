@@ -29,7 +29,7 @@ func (c App) Index() revel.Result {
 
 }
 
-// Create Users via -> /App/CreateUser?dbase=<Database>&collect=<Collection>&user=<Username>&email=<Email>&pass=<Password>
+// Create Users via -> /App/CreateUser?uri=<DB server>dbname=<Database>&collection=<Collection>&user=<Username>&email=<Email>&pass=<Password>
 // You can manually add/remove fields by changing the params and 'doc' variable
 // -----------
 // Parameters:
@@ -117,6 +117,26 @@ func (c App) Auth(uri, dbname, collection, user, pass string) revel.Result {
 	}
 
 	return c.Render(doc)
+}
+
+func (c App) CreateStat(statName, statField string, statCount int) {
+
+}
+
+func (c App) GetUserStats(username string) {
+
+}
+
+func (c App) DefineAchievement(achName, statName string, minVal int) {
+
+}
+
+func (c App) LbSingleGame(GameUsersList) {
+
+}
+
+func (c App) LbGlobal() {
+
 }
 
 // Search available API functions and root to their documentation
