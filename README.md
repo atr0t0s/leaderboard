@@ -14,7 +14,10 @@ and other multiplayer game services such as in-game chat, web access to player
 accounts, forums, and in-game purchases. At an even later stage, the possibility
 of cryptocurrency payments can come under consideration.
 
-The project runs on the Revel framework.
+The project runs on the Revel framework. First make sure you have Go installed
+and that your GOPATH is configured. Then install the revel command line:
+- go get github.com/revel/cmd/revel
 
-- Clone locally and run with "revel run leaderboard"
-- Run from Github without downloading: "revel run github.com/violarisgeorge/leaderboard"
+Then either
+- git clone, make some changes, and run with "revel run leaderboard", or
+- If you only want to test, run from Github without downloading: "revel run github.com/violarisgeorge/leaderboard"
