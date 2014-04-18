@@ -31,13 +31,14 @@ func (c App) Index() revel.Result {
 
 // Create Users via -> /App/CreateUser?dbase=<Database>&collect=<Collection>&user=<Username>&email=<Email>&pass=<Password>
 // You can manually add/remove fields by changing the params and 'doc' variable
-func (c App) CreateUser(dbdetails []string, user, email, pass string) revel.Result {
+// -----------
+// Parameters:
+// uri -> database host with auth info. i.e. for mongodb you could pass "admin:pass@localhost"
+// dbname -> the mongodb database name, collection -> the mongodb collection
+// -----------
+func (c App) CreateUser(uri, dbname, collection, user, email, pass string) revel.Result {
 
 	// connect to DB server(s)
-
-	uri := dbdetails[0]
-	dbname := dbdetails[1]
-	collection := dbdetails[2]
 
 	if uri == "" {
 		fmt.Println("no connection string provided")
@@ -79,7 +80,8 @@ func (c App) CreateUser(dbdetails []string, user, email, pass string) revel.Resu
 
 }
 
-func (c App) Auth(dbdetails []string, user, pass string) revel.Result {
+// DB params (uri, dbname, collection) explained in func CreateUser
+func (c App) Auth(uri, dbname, collection, user, pass string) revel.Result {
 
 	// connect to DB server(s)
 
