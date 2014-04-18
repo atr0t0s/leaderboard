@@ -14,3 +14,7 @@ and other multiplayer game services such as in-game chat, web access to player
 accounts, forums, and in-game purchases. At an even later stage, the possibility
 of cryptocurrency payments can come under consideration.
 
+The project runs on the Revel framework.
+
+- Clone locally and run with "revel run leaderboard"
+- Run from Github without downloading: "revel run github.com/violarisgeorge/leaderboard"
