@@ -18,5 +18,5 @@ The project runs on the Revel framework. First make sure you have Go installed
 and that your GOPATH is configured. Then install the revel command line:
 - go get github.com/revel/cmd/revel
 
-Then either
+Then
 - git clone, make some changes, and run with "revel run leaderboard"
