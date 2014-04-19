@@ -19,5 +19,4 @@ and that your GOPATH is configured. Then install the revel command line:
 - go get github.com/revel/cmd/revel
 
 Then either
-- git clone, make some changes, and run with "revel run leaderboard", or
-- If you only want to test, run from Github without downloading: "revel run github.com/violarisgeorge/leaderboard"
+- git clone, make some changes, and run with "revel run leaderboard"
