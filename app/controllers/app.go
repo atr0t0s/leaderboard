@@ -1,3 +1,6 @@
+// All usage of mgo below is simply for kickstarting the app, but proper models
+// should be implemented in a models folder
+
 package controllers
 
 import (
@@ -81,13 +84,10 @@ func (c App) CreateUser(uri, dbname, collection, user, email, pass string) revel
 }
 
 // DB params (uri, dbname, collection) explained in func CreateUser
+// TODO: Add session control
 func (c App) Auth(uri, dbname, collection, user, pass string) revel.Result {
 
 	// connect to DB server(s)
-
-	uri := dbdetails[0]
-	dbname := dbdetails[1]
-	collection := dbdetails[2]
 
 	if uri == "" {
 		fmt.Println("no connection string provided")
@@ -105,18 +105,19 @@ func (c App) Auth(uri, dbname, collection, user, pass string) revel.Result {
 
 	// TODO: Use encryption through crypto package to hash passwords
 
-	// Query to see if user already exists in collection
-	var doc User
+	// Query to authenticate
+
 	var results []User
 
-	// TODO: Fix the below to search for matches of username+password
-	err = d.Find(bson.M{"username": user}).Sort("-timestamp").All(&results)
+	err = d.Find(bson.M{"username": user, "password": pass}).Sort("-timestamp").All(&results)
 
 	if err != nil {
 		panic(err)
+	} else {
+		fmt.Println(err)
 	}
 
-	return c.Render(doc)
+	return c.RenderJson(results)
 }
 
 func (c App) CreateStat(statName, statField string, statCount int) {
@@ -131,7 +132,7 @@ func (c App) DefineAchievement(achName, statName string, minVal int) {
 
 }
 
-func (c App) LbSingleGame(GameUsersList) {
+func (c App) LbSingleGame(GameUsersList string) {
 
 }
 
