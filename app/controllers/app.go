@@ -28,6 +28,11 @@ type App struct {
 func (c App) Index() revel.Result {
 
 	greeting := "Will use this page to post the API reference"
+
+	if c.Session["user"] != "" {
+		fmt.Println(c.Session["user"] + " is logged in")
+	}
+
 	return c.Render(greeting)
 
 }
@@ -114,10 +119,21 @@ func (c App) Auth(uri, dbname, collection, user, pass string) revel.Result {
 	if err != nil {
 		panic(err)
 	} else {
-		fmt.Println(err)
+		//fmt.Println(err)
+		c.Session["user"] = user
+		c.Flash.Success("Welcome, " + user)
 	}
 
 	return c.RenderJson(results)
+}
+
+func (c App) Logout() revel.Result {
+
+	c.Session["user"] = ""
+
+	session := c.Session["user"]
+
+	return c.RenderJson(session)
 }
 
 func (c App) CreateStat(statName, statField string, statCount int) {
