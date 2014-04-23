@@ -12,7 +12,9 @@ import (
 )
 
 const (
-	uri = "localhost" //change this to your mongodb server including auth (i.e. admin:pass@localhost)
+	uri = "localhost"
+	//change this to your mongodb server including auth (i.e. admin:pass@localhost)
+	// TODO: change this to retrieve uri from a config file
 )
 
 // User Struct
@@ -183,6 +185,10 @@ func (c App) CreateStat(dbname, collection, statName, statMetric string) revel.R
 	}
 
 	return c.RenderJson(doc)
+}
+
+func (c App) SaveUserStat(statName, username string) revel.Result {
+
 }
 
 func (c App) GetUserStats(username string) {
