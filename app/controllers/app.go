@@ -11,6 +11,10 @@ import (
 	"os"
 )
 
+const (
+	uri = "localhost" //change this to your mongodb server including auth (i.e. admin:pass@localhost)
+)
+
 // User Struct
 type User struct {
 	Id       bson.ObjectId `bson:"_id"`
@@ -45,14 +49,13 @@ func (c App) Index() revel.Result {
 
 }
 
-// Create Users via -> /App/CreateUser?uri=<DB server>dbname=<Database>&collection=<Collection>&user=<Username>&email=<Email>&pass=<Password> or POST
+// Create Users via HTTP POST call to /App/CreateUser
 // You can manually add/remove fields by changing the params and 'doc' variable
 // -----------
 // Parameters:
-// uri -> database host with auth info. i.e. for mongodb you could pass "admin:pass@localhost"
 // dbname -> the mongodb database name, collection -> the mongodb collection
 // -----------
-func (c App) CreateUser(uri, dbname, collection, user, email, pass string) revel.Result {
+func (c App) CreateUser(dbname, collection, user, email, pass string) revel.Result {
 
 	// connect to DB server(s)
 
@@ -96,9 +99,7 @@ func (c App) CreateUser(uri, dbname, collection, user, email, pass string) revel
 
 }
 
-// DB params (uri, dbname, collection) explained in func CreateUser
-// TODO: Add session control
-func (c App) Auth(uri, dbname, collection, user, pass string) revel.Result {
+func (c App) Auth(dbname, collection, user, pass string) revel.Result {
 
 	// connect to DB server(s)
 
@@ -144,7 +145,7 @@ func (c App) Logout() revel.Result {
 	return c.RenderJson(session)
 }
 
-func (c App) CreateStat(uri, dbname, collection, statName, statMetric string) revel.Result {
+func (c App) CreateStat(dbname, collection, statName, statMetric string) revel.Result {
 
 	// connect to DB server(s)
 
