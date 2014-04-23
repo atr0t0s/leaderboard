@@ -20,3 +20,9 @@ and that your GOPATH is configured. Then install the revel command line:
 
 Then
 - git clone, make some changes, and run with "revel run leaderboard"
+Or
+- go get github.com/violarisgeorge/leaderboard/, and run with "revel run github.com/violarisgeorge/leaderboard". 
+
+The second method is preferred as it will automatically insert the source code for
+leaderboard in your GOPATH/src folder. If you git clone make sure to copy to that
+folder, or somewhere which is relevant based on your revel cmd configuration.
