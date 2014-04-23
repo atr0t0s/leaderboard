@@ -24,20 +24,28 @@ type App struct {
 	*revel.Controller
 }
 
+type Stat struct {
+	Id         bson.ObjectId `bson:"_id"`
+	StatName   string        `bson:"statname"`
+	StatMetric string        `bson:"statmetric"`
+}
+
 // Goes to web view -> TODO: display API reference
 func (c App) Index() revel.Result {
 
-	greeting := "Will use this page to post the API reference"
+	var greeting string
 
 	if c.Session["user"] != "" {
-		fmt.Println(c.Session["user"] + " is logged in")
+		greeting = "Welcome " + c.Session["user"]
+	} else {
+		greeting = "Please login"
 	}
 
 	return c.Render(greeting)
 
 }
 
-// Create Users via -> /App/CreateUser?uri=<DB server>dbname=<Database>&collection=<Collection>&user=<Username>&email=<Email>&pass=<Password>
+// Create Users via -> /App/CreateUser?uri=<DB server>dbname=<Database>&collection=<Collection>&user=<Username>&email=<Email>&pass=<Password> or POST
 // You can manually add/remove fields by changing the params and 'doc' variable
 // -----------
 // Parameters:
@@ -136,8 +144,44 @@ func (c App) Logout() revel.Result {
 	return c.RenderJson(session)
 }
 
-func (c App) CreateStat(statName, statField string, statCount int) {
+func (c App) CreateStat(uri, dbname, collection, statName, statMetric string) revel.Result {
 
+	// connect to DB server(s)
+
+	if uri == "" {
+		fmt.Println("no connection string provided")
+		os.Exit(1)
+	}
+	session, err := mgo.Dial(uri)
+	if err != nil {
+		panic(err)
+	}
+
+	defer session.Close()
+
+	// select DB and Collection
+	d := session.DB(dbname).C(collection)
+
+	var doc Stat
+	var results []Stat
+	err = d.Find(bson.M{"statname": statName}).Sort("-timestamp").All(&results)
+
+	if err != nil {
+		panic(err)
+	} else {
+		if len(results) == 0 {
+			//do DB operations
+			doc = Stat{Id: bson.NewObjectId(), StatName: statName, StatMetric: statMetric}
+			err = d.Insert(doc)
+			if err != nil {
+				panic(err)
+			}
+		} else {
+			return c.RenderJson("Error: A statistic with the same name already exists in the database.")
+		}
+	}
+
+	return c.RenderJson(doc)
 }
 
 func (c App) GetUserStats(username string) {
