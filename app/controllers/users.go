@@ -1,40 +1,24 @@
 package controllers
 
 import (
-	"fmt"
 	"github.com/revel/revel"
-	"labix.org/v2/mgo"
 	"labix.org/v2/mgo/bson"
 	"leaderboard/app/models"
-	"os"
 )
 
 // Create Users via HTTP POST call to /App/CreateUser
 // You can manually add/remove fields by changing the params and 'doc' variable
 func (c App) CreateUser(name, user, email, pass string) revel.Result {
 
-	// connect to DB server(s)
-
-	if uri == "" {
-		fmt.Println("no connection string provided")
-		os.Exit(1)
-	}
-	session, err := mgo.Dial(uri)
-	if err != nil {
-		panic(err)
-	}
-
-	defer session.Close()
-
-	// select DB and Collection
-	d := session.DB(dbname).C(usercol)
+	// connect to DB server
+	d := db(usercol)
 
 	// TODO: Use encryption through crypto package to hash passwords
-
 	// Query to see if user already exists in collection
 	var doc models.User
 	var results []models.User
-	err = d.Find(bson.M{"username": user}).Sort("-timestamp").All(&results)
+
+	err := d.Find(bson.M{"username": user}).Sort("-timestamp").All(&results)
 
 	if err != nil {
 		panic(err)
@@ -58,28 +42,14 @@ func (c App) CreateUser(name, user, email, pass string) revel.Result {
 func (c App) Auth(user, pass string) revel.Result {
 
 	// connect to DB server(s)
-
-	if uri == "" {
-		fmt.Println("no connection string provided")
-		os.Exit(1)
-	}
-	session, err := mgo.Dial(uri)
-	if err != nil {
-		panic(err)
-	}
-
-	defer session.Close()
-
-	// select DB and Collection
-	d := session.DB(dbname).C(usercol)
+	d := db(usercol)
 
 	// TODO: Use encryption through crypto package to hash passwords
-
 	// Query to authenticate
 
 	var results []models.User
 
-	err = d.Find(bson.M{"username": user, "password": pass}).Sort("-timestamp").All(&results)
+	err := d.Find(bson.M{"username": user, "password": pass}).Sort("-timestamp").All(&results)
 
 	if err != nil {
 		panic(err)

@@ -1,35 +1,19 @@
 package controllers
 
 import (
-	"fmt"
 	"github.com/revel/revel"
-	"labix.org/v2/mgo"
 	"labix.org/v2/mgo/bson"
 	"leaderboard/app/models"
-	"os"
 )
 
 func (c App) CreateStat(statName, statMetric string) revel.Result {
 
 	// connect to DB server(s)
-
-	if uri == "" {
-		fmt.Println("no connection string provided")
-		os.Exit(1)
-	}
-	session, err := mgo.Dial(uri)
-	if err != nil {
-		panic(err)
-	}
-
-	defer session.Close()
-
-	// select DB and Collection
-	d := session.DB(dbname).C(statcol)
+	d := db(statcol)
 
 	var doc models.Stat
 	var results []models.Stat
-	err = d.Find(bson.M{"statname": statName}).Sort("-timestamp").All(&results)
+	err := d.Find(bson.M{"statname": statName}).Sort("-timestamp").All(&results)
 
 	if err != nil {
 		panic(err)
