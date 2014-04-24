@@ -6,7 +6,8 @@ import (
 	"os"
 )
 
-func db(collection string) *mgo.Collection {
+func db(collection string) (*mgo.Collection, *mgo.Session) {
+
 	if uri == "" {
 		fmt.Println("no connection string provided")
 		os.Exit(1)
@@ -19,7 +20,5 @@ func db(collection string) *mgo.Collection {
 	// select DB and Collection
 	d := session.DB(dbname).C(collection)
 
-	//defer session.Close()
-
-	return d
+	return d, session
 }
