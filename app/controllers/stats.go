@@ -9,7 +9,7 @@ import (
 	"os"
 )
 
-func (c App) CreateStat(dbname, collection, statName, statMetric string) revel.Result {
+func (c App) CreateStat(statName, statMetric string) revel.Result {
 
 	// connect to DB server(s)
 
@@ -25,7 +25,7 @@ func (c App) CreateStat(dbname, collection, statName, statMetric string) revel.R
 	defer session.Close()
 
 	// select DB and Collection
-	d := session.DB(dbname).C(collection)
+	d := session.DB(dbname).C(statcol)
 
 	var doc models.Stat
 	var results []models.Stat

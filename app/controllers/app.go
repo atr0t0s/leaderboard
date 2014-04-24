@@ -7,12 +7,6 @@ import (
 	"github.com/revel/revel"
 )
 
-const (
-	uri = "localhost"
-	//change this to your mongodb server including auth (i.e. admin:pass@localhost)
-	// TODO: change this to retrieve uri from a config file
-)
-
 type App struct {
 	*revel.Controller
 }

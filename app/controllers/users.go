@@ -11,11 +11,7 @@ import (
 
 // Create Users via HTTP POST call to /App/CreateUser
 // You can manually add/remove fields by changing the params and 'doc' variable
-// -----------
-// Parameters:
-// dbname -> the mongodb database name, collection -> the mongodb collection
-// -----------
-func (c App) CreateUser(dbname, collection, name, user, email, pass string) revel.Result {
+func (c App) CreateUser(name, user, email, pass string) revel.Result {
 
 	// connect to DB server(s)
 
@@ -31,7 +27,7 @@ func (c App) CreateUser(dbname, collection, name, user, email, pass string) reve
 	defer session.Close()
 
 	// select DB and Collection
-	d := session.DB(dbname).C(collection)
+	d := session.DB(dbname).C(usercol)
 
 	// TODO: Use encryption through crypto package to hash passwords
 
@@ -59,7 +55,7 @@ func (c App) CreateUser(dbname, collection, name, user, email, pass string) reve
 
 }
 
-func (c App) Auth(dbname, collection, user, pass string) revel.Result {
+func (c App) Auth(user, pass string) revel.Result {
 
 	// connect to DB server(s)
 
@@ -75,7 +71,7 @@ func (c App) Auth(dbname, collection, user, pass string) revel.Result {
 	defer session.Close()
 
 	// select DB and Collection
-	d := session.DB(dbname).C(collection)
+	d := session.DB(dbname).C(usercol)
 
 	// TODO: Use encryption through crypto package to hash passwords
 
