@@ -4,7 +4,7 @@ package controllers
 
 const (
 	uri     = "localhost"
-	dbname  = "libtest"
-	usercol = "libuser"
+	dbname  = "leaderboard"
+	usercol = "users"
 	statcol = "statistics"
 )

@@ -16,10 +16,10 @@ func db(collection string) *mgo.Collection {
 		panic(err)
 	}
 
-	defer session.Close()
-
 	// select DB and Collection
 	d := session.DB(dbname).C(collection)
+
+	//defer session.Close()
 
 	return d
 }
