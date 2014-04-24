@@ -9,7 +9,7 @@ import (
 func (c App) CreateStat(statName, statMetric string) revel.Result {
 
 	// connect to DB server(s)
-	d := db(statcol)
+	d, s := db(statcol)
 
 	var doc models.Stat
 	var results []models.Stat
@@ -29,6 +29,8 @@ func (c App) CreateStat(statName, statMetric string) revel.Result {
 			return c.RenderJson("Error: A statistic with the same name already exists in the database.")
 		}
 	}
+
+	s.Close()
 
 	return c.RenderJson(doc)
 }

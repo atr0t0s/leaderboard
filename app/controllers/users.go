@@ -11,7 +11,7 @@ import (
 func (c App) CreateUser(name, user, email, pass string) revel.Result {
 
 	// connect to DB server
-	d := db(usercol)
+	d, s := db(usercol)
 
 	// TODO: Use encryption through crypto package to hash passwords
 	// Query to see if user already exists in collection
@@ -35,6 +35,8 @@ func (c App) CreateUser(name, user, email, pass string) revel.Result {
 		}
 	}
 
+	s.Close()
+
 	return c.RenderJson(doc)
 
 }
@@ -42,7 +44,7 @@ func (c App) CreateUser(name, user, email, pass string) revel.Result {
 func (c App) Auth(user, pass string) revel.Result {
 
 	// connect to DB server(s)
-	d := db(usercol)
+	d, s := db(usercol)
 
 	// TODO: Use encryption through crypto package to hash passwords
 	// Query to authenticate
@@ -58,6 +60,8 @@ func (c App) Auth(user, pass string) revel.Result {
 		c.Session["user"] = user
 		c.Flash.Success("Welcome, " + user)
 	}
+
+	s.Close()
 
 	return c.RenderJson(results)
 }
