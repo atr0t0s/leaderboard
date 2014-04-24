@@ -8,6 +8,12 @@ import (
 	"os"
 )
 
+// Create Users via HTTP POST call to /App/CreateUser
+// You can manually add/remove fields by changing the params and 'doc' variable
+// -----------
+// Parameters:
+// dbname -> the mongodb database name, collection -> the mongodb collection
+// -----------
 func (c App) CreateUser(dbname, collection, user, email, pass string) revel.Result {
 
 	// connect to DB server(s)

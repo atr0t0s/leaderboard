@@ -4,11 +4,8 @@
 package controllers
 
 import (
-	"fmt"
 	"github.com/revel/revel"
-	"labix.org/v2/mgo"
 	"labix.org/v2/mgo/bson"
-	"os"
 )
 
 const (
@@ -51,79 +48,9 @@ func (c App) Index() revel.Result {
 
 }
 
-// Create Users via HTTP POST call to /App/CreateUser
-// You can manually add/remove fields by changing the params and 'doc' variable
-// -----------
-// Parameters:
-// dbname -> the mongodb database name, collection -> the mongodb collection
-// -----------
-
-func (c App) CreateStat(dbname, collection, statName, statMetric string) revel.Result {
-
-	// connect to DB server(s)
-
-	if uri == "" {
-		fmt.Println("no connection string provided")
-		os.Exit(1)
-	}
-	session, err := mgo.Dial(uri)
-	if err != nil {
-		panic(err)
-	}
-
-	defer session.Close()
-
-	// select DB and Collection
-	d := session.DB(dbname).C(collection)
-
-	var doc Stat
-	var results []Stat
-	err = d.Find(bson.M{"statname": statName}).Sort("-timestamp").All(&results)
-
-	if err != nil {
-		panic(err)
-	} else {
-		if len(results) == 0 {
-			//do DB operations
-			doc = Stat{Id: bson.NewObjectId(), StatName: statName, StatMetric: statMetric}
-			err = d.Insert(doc)
-			if err != nil {
-				panic(err)
-			}
-		} else {
-			return c.RenderJson("Error: A statistic with the same name already exists in the database.")
-		}
-	}
-
-	return c.RenderJson(doc)
-}
-
-func (c App) DefineAchievement(achName, statName string, minVal int) {
-
-}
-
-func (c App) LbSingleGame(GameUsersList string) {
-
-}
-
-func (c App) LbGlobal() {
-
-}
-
 // Search available API functions and root to their documentation
 // TODO: Should be done once an alpha version is ready
 func (c App) RefSearch(findFunction string) revel.Result {
-
-	/*
-		c.Validation.Required(finfFunction).Message("Your name is required!")
-		c.Validation.MinSize(findFunction, 3).Message("Your name is not long enough!")
-
-		if c.Validation.HasErrors() {
-			c.Validation.Keep()
-			c.FlashParams()
-			return c.Redirect(App.Index)
-		}
-	*/
 
 	return c.Render(findFunction)
 }
