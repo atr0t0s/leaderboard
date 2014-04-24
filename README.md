@@ -26,3 +26,11 @@ Or
 The second method is preferred as it will automatically insert the source code for
 leaderboard in your GOPATH/src folder. If you git clone make sure to copy to that
 folder, or somewhere which is relevant based on your revel cmd configuration.
+
+// TODO: Introduced models for db object creation to be clearer, however still
+// need to add a db controller for unified mgo requests so the db object will not
+// have to be reinstantiated in every function that needs to use the db
+// (this project is currently set up to work only with MongoDB. SQL may be 
+// introduced later on if needed - this makes the need for a unified db controller
+// more obvious, as the DB driver can be changed based on project needs rather
+// than forcing everyone to work with mgo)

@@ -5,7 +5,6 @@ package controllers
 
 import (
 	"github.com/revel/revel"
-	"labix.org/v2/mgo/bson"
 )
 
 const (
@@ -14,23 +13,8 @@ const (
 	// TODO: change this to retrieve uri from a config file
 )
 
-// User Struct
-type User struct {
-	Id       bson.ObjectId `bson:"_id"`
-	Username string        `bson:"username"`
-	Email    string        `bson:"email"`
-	Password string        `bson:"password"`
-}
-
-// App Struct
 type App struct {
 	*revel.Controller
-}
-
-type Stat struct {
-	Id         bson.ObjectId `bson:"_id"`
-	StatName   string        `bson:"statname"`
-	StatMetric string        `bson:"statmetric"`
 }
 
 // Goes to web view -> TODO: display API reference

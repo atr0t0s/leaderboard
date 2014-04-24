@@ -5,6 +5,7 @@ import (
 	"github.com/revel/revel"
 	"labix.org/v2/mgo"
 	"labix.org/v2/mgo/bson"
+	"leaderboard/app/models"
 	"os"
 )
 
@@ -14,7 +15,7 @@ import (
 // Parameters:
 // dbname -> the mongodb database name, collection -> the mongodb collection
 // -----------
-func (c App) CreateUser(dbname, collection, user, email, pass string) revel.Result {
+func (c App) CreateUser(dbname, collection, name, user, email, pass string) revel.Result {
 
 	// connect to DB server(s)
 
@@ -35,8 +36,8 @@ func (c App) CreateUser(dbname, collection, user, email, pass string) revel.Resu
 	// TODO: Use encryption through crypto package to hash passwords
 
 	// Query to see if user already exists in collection
-	var doc User
-	var results []User
+	var doc models.User
+	var results []models.User
 	err = d.Find(bson.M{"username": user}).Sort("-timestamp").All(&results)
 
 	if err != nil {
@@ -44,7 +45,7 @@ func (c App) CreateUser(dbname, collection, user, email, pass string) revel.Resu
 	} else {
 		if len(results) == 0 {
 			//do DB operations
-			doc = User{Id: bson.NewObjectId(), Username: user, Email: email, Password: pass}
+			doc = models.User{Id: bson.NewObjectId(), Name: name, Username: user, Email: email, Password: pass}
 			err = d.Insert(doc)
 			if err != nil {
 				panic(err)
@@ -80,7 +81,7 @@ func (c App) Auth(dbname, collection, user, pass string) revel.Result {
 
 	// Query to authenticate
 
-	var results []User
+	var results []models.User
 
 	err = d.Find(bson.M{"username": user, "password": pass}).Sort("-timestamp").All(&results)
 

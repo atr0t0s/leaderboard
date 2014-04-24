@@ -5,6 +5,7 @@ import (
 	"github.com/revel/revel"
 	"labix.org/v2/mgo"
 	"labix.org/v2/mgo/bson"
+	"leaderboard/app/models"
 	"os"
 )
 
@@ -26,8 +27,8 @@ func (c App) CreateStat(dbname, collection, statName, statMetric string) revel.R
 	// select DB and Collection
 	d := session.DB(dbname).C(collection)
 
-	var doc Stat
-	var results []Stat
+	var doc models.Stat
+	var results []models.Stat
 	err = d.Find(bson.M{"statname": statName}).Sort("-timestamp").All(&results)
 
 	if err != nil {
@@ -35,7 +36,7 @@ func (c App) CreateStat(dbname, collection, statName, statMetric string) revel.R
 	} else {
 		if len(results) == 0 {
 			//do DB operations
-			doc = Stat{Id: bson.NewObjectId(), StatName: statName, StatMetric: statMetric}
+			doc = models.Stat{Id: bson.NewObjectId(), StatName: statName, StatMetric: statMetric}
 			err = d.Insert(doc)
 			if err != nil {
 				panic(err)
@@ -48,7 +49,7 @@ func (c App) CreateStat(dbname, collection, statName, statMetric string) revel.R
 	return c.RenderJson(doc)
 }
 
-func (c App) DefineAchievement(achName, statName string, minVal int) {
+func (c App) DefineAchievement(achName string, stat models.Stat, minVal int) {
 
 }
 
