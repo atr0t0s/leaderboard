@@ -49,9 +49,9 @@ func (c App) Auth(user, pass string) revel.Result {
 	// TODO: Use encryption through crypto package to hash passwords
 	// Query to authenticate
 
-	var results []models.User
-
-	err := d.Find(bson.M{"username": user, "password": pass}).Sort("-timestamp").All(&results)
+	results := models.User{}
+	query := bson.M{"username": user, "password": pass}
+	err := d.Find(query).One(&results)
 
 	if err != nil {
 		panic(err)
