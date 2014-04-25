@@ -16,7 +16,6 @@ func (c App) CreateUser(name, user, email, pass, role string) revel.Result {
 		// connect to DB server
 		d, s := db(usercol)
 
-		// TODO: Use encryption through crypto package to hash passwords
 		// Query to see if user already exists in collection
 		var doc models.User
 		var results []models.User
