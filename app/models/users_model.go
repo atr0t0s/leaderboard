@@ -14,6 +14,7 @@ type User struct {
 	Email    string        `bson:"email"`
 	Password string        `bson:"password"`
 	HashPass []byte        `bson:"hashpass"`
+	Role     string        `bson:"role"`
 }
 
 //TODO: Validation functions below will be used at a later stage

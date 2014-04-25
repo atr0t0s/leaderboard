@@ -3,8 +3,9 @@
 package controllers
 
 const (
-	uri     = "localhost"
-	dbname  = "leaderboard"
-	usercol = "users"
-	statcol = "statistics"
+	uri       = "localhost"
+	dbname    = "leaderboard"
+	usercol   = "users"
+	statcol   = "statistics"
+	adminrole = "sadmin"
 )
