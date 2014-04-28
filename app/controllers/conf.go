@@ -8,6 +8,8 @@ const (
 	usercol     = "users"
 	statcol     = "statistics"
 	userstatcol = "userstats"
+	achcol      = "achievements"
+	userachcol  = "userachs"
 	adminrole   = "sadmin"
 	playerrole  = "player"
 )

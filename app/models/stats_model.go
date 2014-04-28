@@ -18,8 +18,15 @@ type UserStat struct {
 
 //Achievements object
 type Ach struct {
-	Id      bson.ObjectId `bson:"_id"`
-	AchName string        `bson:"achname"`
-	Gstat   Stat          `bson:"stat"`
-	minVal  int           `bson:"minVal"`
+	Id       bson.ObjectId `bson:"_id"`
+	AchName  string        `bson:"achname"`
+	StatName string        `bson:"stat"`
+	MinVal   float64       `bson:"minVal"`
+}
+
+type UserAch struct {
+	Id       bson.ObjectId `bson:"_id"`
+	AchName  string        `bson:"achievement"`
+	Complete bool          `bson:"complete"`
+	Username string        `bson:"user"`
 }
