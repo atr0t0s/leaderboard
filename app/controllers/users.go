@@ -47,7 +47,7 @@ func (c App) CreateUser(name string, username string, email string, password str
 	}
 }
 
-func (c App) getUser(username string) *models.User {
+func (c App) GetUser(username string) *models.User {
 
 	// connect to DB server(s)
 	d, s := db(usercol)
@@ -72,11 +72,12 @@ func (c App) getUser(username string) *models.User {
 
 func (c App) Auth(username string, password string, remember bool) revel.Result {
 
-	user := c.getUser(username)
+	user := c.GetUser(username)
 	if user != nil {
 		err := bcrypt.CompareHashAndPassword(user.HashPass, []byte(password))
 		if err == nil {
 			c.Session["user"] = username
+			c.Session["role"] = user.Role
 			if remember {
 				c.Session.SetDefaultExpiration()
 			} else {
@@ -100,12 +101,4 @@ func (c App) Logout() revel.Result {
 	session := c.Session["user"]
 
 	return c.RenderJson(session)
-}
-
-func (c App) SaveUserStat(statName, username string) {
-
-}
-
-func (c App) GetUserStats(username string) {
-
 }
