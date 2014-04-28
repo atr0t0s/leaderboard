@@ -7,14 +7,14 @@ import (
 	"leaderboard/app/models"
 )
 
-func (c App) GetStat(statName string) *models.Stat {
+func (c App) GetStat(name string) *models.Stat {
 
 	// connect to DB server(s)
 	d, s := db(statcol)
 
 	// Query
 	results := models.Stat{}
-	query := bson.M{"statname": statName}
+	query := bson.M{"statname": name}
 	err := d.Find(query).One(&results)
 
 	if err != nil {
@@ -81,6 +81,33 @@ func (c App) SaveUserStat(statName string, statValue float64) revel.Result {
 
 }
 
-func (c App) GetUserStats(username string) {
+func (c App) GetUserStats(username string) revel.Result {
+
+	// connect to DB server(s)
+	d, s := db(userstatcol)
+
+	var user string
+
+	if len(username) == 0 {
+		user = c.Session["user"]
+	} else {
+		user = username
+	}
+
+	// Query
+	var results []models.UserStat
+	query := bson.M{"user": user}
+	err := d.Find(query).Sort("-timestamp").All(&results)
+
+	if err != nil {
+		panic(err)
+	}
+	if len(results) == 0 {
+		return nil
+	}
+
+	s.Close()
+
+	return c.RenderJson(results)
 
 }
