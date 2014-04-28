@@ -2,8 +2,6 @@ package controllers
 
 import (
 	"code.google.com/p/go.crypto/bcrypt"
-	//"encoding/base64"
-	//"fmt"
 	"github.com/revel/revel"
 	"labix.org/v2/mgo/bson"
 	"leaderboard/app/models"

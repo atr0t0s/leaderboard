@@ -1,9 +1,3 @@
-// All usage of mgo below is simply for kickstarting the app, but proper models
-// should be implemented in a models folder
-// TODO *: Use encryption through crypto package to hash passwords
-// <- BRANCH CRYPTO
-// START WORK ON ABOVE TODO * IN THIS BRANCH
-// <- REMOVE COMMENT BEFORE MERGING
 package controllers
 
 import (
