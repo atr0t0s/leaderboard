@@ -9,6 +9,13 @@ type Stat struct {
 	StatMetric string        `bson:"statmetric"`
 }
 
+type UserStat struct {
+	Id       bson.ObjectId `bson:"_id"`
+	StatName string        `bson:"statistic"`
+	Value    float64       `bson:"value"`
+	Username string        `bson:"user"`
+}
+
 //Achievements object
 type Ach struct {
 	Id      bson.ObjectId `bson:"_id"`
