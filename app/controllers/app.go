@@ -1,6 +1,3 @@
-// All usage of mgo below is simply for kickstarting the app, but proper models
-// should be implemented in a models folder
-
 package controllers
 
 import (
