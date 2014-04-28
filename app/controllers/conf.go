@@ -12,4 +12,5 @@ const (
 	userachcol  = "userachs"
 	adminrole   = "sadmin"
 	playerrole  = "player"
+	appsecret   = "h2LbdR5ndm7s8u3yWIfez28yFyTJVLxi1ALCl8Q0JISnbaUq5kzRlILmup9jrBK" //change this
 )

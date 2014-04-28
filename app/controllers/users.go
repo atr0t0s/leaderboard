@@ -102,3 +102,43 @@ func (c App) Logout() revel.Result {
 
 	return c.RenderJson(session)
 }
+
+// Emergency will be used to recover admin privileges - still trying to see how
+// to make this func more safe to include
+/*func (c App) Emergency(secret string, name string, username string, email string, password string, role string) revel.Result {
+
+	if secret != appsecret {
+		return c.RenderJson("Wrong")
+	} else {
+		// connect to DB server
+		d, s := db(usercol)
+
+		// Query to see if user already exists in collection
+		var doc models.User
+		var results []models.User
+		doc.HashPass, _ = bcrypt.GenerateFromPassword(
+			[]byte(password), bcrypt.DefaultCost)
+
+		err := d.Find(bson.M{"username": username}).Sort("-timestamp").All(&results)
+
+		if err != nil {
+			panic(err)
+		} else {
+			if len(results) == 0 {
+				//do DB operations
+				doc = models.User{Id: bson.NewObjectId(), Name: name, Username: username, Email: email, HashPass: doc.HashPass, Role: role}
+				err = d.Insert(doc)
+				if err != nil {
+					panic(err)
+				} else {
+					s.Close()
+					return c.RenderJson(doc)
+				}
+			} else {
+				s.Close()
+				return c.RenderJson("Error: User already exists")
+			}
+		}
+
+	}
+}*/
