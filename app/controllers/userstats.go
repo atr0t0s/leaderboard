@@ -79,6 +79,12 @@ func (c App) SaveUserStat(statName string, statValue float64) revel.Result {
 				panic(err)
 			} else {
 				if results.Value > ach.MinVal {
+					// works OK but what if we insert the new stat increment and
+					// inserting of achievement fails? then user would have
+					// missed an achievement, so we need a way of controlling
+					// when achievements are missed. Perhaps we need to check
+					// if achievement has been reached before incrementing stat
+					// in database... Same for line 104
 					c.Achieve(ach.AchName, true)
 				}
 				s.Close()

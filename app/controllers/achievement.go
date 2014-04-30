@@ -47,20 +47,20 @@ func (c App) Achieve(achName string, complete bool) revel.Result {
 		query := bson.M{"achievement": ach.AchName, "user": user.Username}
 		err := d.Find(query).One(&results)
 
+		if len(results.AchName) == 0 {
+			//do DB operations
+			doc = models.UserAch{Id: bson.NewObjectId(), AchName: achName, Complete: complete, Username: user.Username}
+			err = d.Insert(doc)
+			if err != nil {
+				panic(err)
+			} else {
+				s.Close()
+				return c.RenderJson(doc)
+			}
+		}
+
 		if err != nil {
 			panic(err)
-		} else {
-			if len(results.AchName) == 0 {
-				//do DB operations
-				doc = models.UserAch{Id: bson.NewObjectId(), AchName: achName, Complete: complete, Username: user.Username}
-				err = d.Insert(doc)
-				if err != nil {
-					panic(err)
-				} else {
-					s.Close()
-					return c.RenderJson(doc)
-				}
-			}
 		}
 
 		return c.RenderJson(results)
