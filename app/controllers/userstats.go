@@ -30,6 +30,29 @@ func (c App) GetStat(name string) *models.Stat {
 
 }
 
+func (c App) GetAchStat(name string) *models.Ach {
+
+	// connect to DB server(s)
+	d, s := db(achcol)
+
+	// Query
+	results := models.Ach{}
+	query := bson.M{"stat": name}
+	err := d.Find(query).One(&results)
+
+	if err != nil {
+		panic(err)
+	}
+	if len(results.AchName) == 0 {
+		return nil
+	}
+
+	s.Close()
+
+	return &results
+
+}
+
 func (c App) SaveUserStat(statName string, statValue float64) revel.Result {
 
 	if c.Session["user"] == "" || c.Session["role"] != playerrole {
@@ -38,6 +61,7 @@ func (c App) SaveUserStat(statName string, statValue float64) revel.Result {
 		username := c.Session["user"]
 		stat := c.GetStat(statName)
 		user := c.GetUser(username)
+		ach := c.GetAchStat(stat.StatName)
 		// connect to DB server
 		d, s := db(userstatcol)
 
@@ -54,6 +78,9 @@ func (c App) SaveUserStat(statName string, statValue float64) revel.Result {
 			if err != nil {
 				panic(err)
 			} else {
+				if results.Value > ach.MinVal {
+					c.Achieve(ach.AchName, true)
+				}
 				s.Close()
 				return c.RenderJson(doc)
 			}
@@ -67,6 +94,9 @@ func (c App) SaveUserStat(statName string, statValue float64) revel.Result {
 			if err != nil {
 				panic(err)
 			} else {
+				if newValue > ach.MinVal {
+					c.Achieve(ach.AchName, true)
+				}
 				s.Close()
 				return c.RenderJson(err)
 			}
